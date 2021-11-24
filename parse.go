@@ -94,17 +94,21 @@ func Parse(tag string) ([]Param, error) {
 				pushByte()
 			}
 		case ',':
-			if sb.String() != "" {
-				if err := pushWord(); err != nil {
-					return nil, err
+			if state & isQuoted == 0 {
+				if sb.String() != "" {
+					if err := pushWord(); err != nil {
+						return nil, err
+					}
 				}
+				if param.Key == "" {
+					return nil, errors.New("key is empty")
+				}
+				state = 0
+				params = append(params, param)
+				param = Param{}
+			} else {
+				pushByte()
 			}
-			if param.Key == "" {
-				return nil, errors.New("key is empty")
-			}
-			state = 0
-			params = append(params, param)
-			param = Param{}
 		case '=':
 			if err := pushWord(); err != nil {
 				return nil, err

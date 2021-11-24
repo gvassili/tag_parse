@@ -28,6 +28,7 @@ func TestParse(t *testing.T) {
 	assertTagParam(t, `key1,key2`, []Param{{"key1", nil}, {"key2", nil}})
 	assertTagParam(t, `key1=value1`, []Param{{"key1", []string{"value1"}}})
 	assertTagParam(t, `' key1 '=' value1 '`, []Param{{" key1 ", []string{" value1 "}}})
+	assertTagParam(t, `key1='value1,value2'`, []Param{{"key1", []string{"value1,value2"}}})
 	assertTagParam(t, `key1=value1,key2=value2`, []Param{{"key1", []string{"value1"}}, {"key2", []string{"value2"}}})
 	assertTagParam(t, `key1 = value1 , key2 = value2`, []Param{{"key1", []string{"value1"}}, {"key2", []string{"value2"}}})
 	assertTagParam(t, `key1 = value1 value2 value3`, []Param{{"key1", []string{"value1", "value2", "value3"}}})
